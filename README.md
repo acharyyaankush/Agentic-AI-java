@@ -1,114 +1,71 @@
-# Template project for building Java agents with ADK
+# Agentic AI Workflows in Java
 
-This GitHub repository is a project template to get started creating your first 
-agent with [ADK](https://google.github.io/adk-docs/) for Java, the open source
-Agent Development Kit, and building with [Maven](https://maven.apache.org).
+This repository explores modern AI agent architectures using the [Agent Development Kit (ADK)](https://google.github.io/adk-docs/) for Java. It demonstrates how to transition from basic Large Language Model (LLM) prompts to orchestrated, multi-agent systems capable of autonomous reasoning, tool usage, and complex problem-solving.
 
-![](https://google.github.io/adk-docs/assets/agent-development-kit.png)
+By treating individual AI agents as specialized microservices, this project showcases advanced execution patterns including sequential pipelines, parallel data fetching, and iterative refinement loops.
 
-# Instructions
+## 🧠 Architectures & Agents Built
 
-The following screenshot of the GitHub interface shows how you can use this template project to get started:
+This project contains several distinct AI agents, each demonstrating a different architectural pattern:
 
-![](use-template.png)
+* **`ScienceTeacher` (Persona Agent):** A foundational agent demonstrating system instructions and persona-driven responses.
+* **`StockTicker` (Custom Tools):** Demonstrates how to bridge the LLM with external business logic by equipping it with custom Java functions to fetch mock data.
+* **`SearchAgentAsTool` (Agents as Tools):** An advanced pattern where a specialized web-searching sub-agent is provided to a main agent as a callable tool using the Google Search integration.
+* **`SupportAgent` (Delegation/Routing Workflow):** A supervisor agent that routes user queries to the appropriate specialized sub-agent (Order vs. After-Sales) based on intent.
+* **`PoetAndTranslator` (Sequential Assembly Line):** A pipeline architecture where the output of one agent is systematically piped directly into the next.
+* **`CompanyDetective` (Parallel Execution):** An orchestrator that deploys three specialized research agents concurrently to gather profile, news, and financial data, significantly reducing I/O latency before synthesizing a final report.
+* **`CodeRefiner` (Iterative Loop):** An autonomous "Generate -> Review -> Refine" loop where a Junior Developer agent and Senior Reviewer agent collaborate until a specific quality threshold is met.
 
-> [!TIP]
-> * Check out the GitHub [documentation](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)
-> about forking and cloning template projects.
-> * Read the [getting started guide](https://google.github.io/adk-docs/get-started/java/).
-> * Be sure to read the [ADK documentation](https://google.github.io/adk-docs/get-started/quickstart/#set-up-the-model) 
-> to better understand how to configure the model and API key.
+## ⚙️ Prerequisites & Setup
 
-# Setup
+To run these agents locally, you will need:
+* Java 17+
+* Apache Maven
+* A Gemini API Key (obtainable from [Google AI Studio](https://aistudio.google.com/apikey))
 
-To use Gemini (or other supported models), you must set up the right environment variables for the model to be properly configured.
+### 1. Set your API Key
+Before running the agents, you must set your API key as an environment variable in your terminal.
 
-Set up the following environment variables:
+**Windows (PowerShell):**
+```powershell
+$env:GOOGLE_API_KEY="your-api-key-here"
 
-```shell
-export GOOGLE_API_KEY="PASTE_YOUR_ACTUAL_API_KEY_HERE"
-export GOOGLE_GENAI_USE_VERTEXAI=FALSE
-```
+**Windows (Command Prompt):**
+```DOS
+set GOOGLE_API_KEY=your-api-key-here
 
-> [!TIP]
-> You can get an API key in [Google AI Studio](https://aistudio.google.com/apikey).
-
-> [!IMPORTANT]
-> Be sure to replace `"PASTE_YOUR_ACTUAL_API_KEY_HERE"` above, with the value of the key.
-
-# Running the agent
-
-The `HelloWeatherAgent` class is a simple agent configured with one tool to request a canned weather forecast from any city.
-
-There are two options to run your agent: 
-* using the ADK Dev UI
-* from the command-line
-
-## Running the agent from the Dev UI
-
-The Dev UI offers a useful chat interface to interact with your agent.
-Run the command below to launch it, and open a browser at `http://localhost:8080/`.
-
-```shell
-mvn compile exec:java -Dexec.mainClass=com.example.agent.HelloWeatherAgent
-```
-
-In your browser, you can select the agent in the top left-hand corner and chat with it in the main chat space.
-In the left panel, you can explore the various events, including function calls, LLM requests, and responses,
-to understand what happens when a user converses with the agent.
-
-Here's a screenshot of the Dev UI in action for your `HelloWeatherAgent` agent:
-
-![](adk-dev-ui.png)
-
-## Running the agent from the command-line
-
-By default, the `main()` method of this agent launches the ADK Dev UI, on localhost:8080.
-You can also comment this line launching the Dev UI and instead uncomment the custom run loop, if you want to run the agent from the terminal.
-
-Type `quit` to exit the agent conversation.
-
-Run the following Maven command to launch the agent in the terminal, after having uncommented the custom run loop:
-
-```shell
-mvn compile exec:java -Dexec.mainClass="com.example.agent.HelloWeatherAgent"
-```
-
-<details>
-<summary>Expand to see the output</summary>
-
-```
-[INFO] Scanning for projects...
-[INFO] 
-[INFO] --------------------< com.example.agent:adk-agents >--------------------
-[INFO] Building adk-agents 1.0-SNAPSHOT
-[INFO]   from pom.xml
-[INFO] --------------------------------[ jar ]---------------------------------
-[INFO] 
-[INFO] --- resources:3.3.1:resources (default-resources) @ adk-agents ---
-[INFO] skip non existing resourceDirectory /Users/glaforge/Projects/adk-java-maven-template/src/main/resources
-[INFO] 
-[INFO] --- compiler:3.13.0:compile (default-compile) @ adk-agents ---
-[INFO] Nothing to compile - all classes are up to date.
-[INFO] 
-[INFO] --- exec:3.6.1:java (default-cli) @ adk-agents ---
-
-You > What's the weather in Paris?
-
-Agent > The weather in Paris is sunny with a clear blue sky, and the temperature will be up to 24°C.
-
-You > quit
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  51.659 s
-[INFO] Finished at: 2025-10-12T13:07:47+02:00
-[INFO] ------------------------------------------------------------------------
-```
-
-</details>
+**macOS / Linux:**
+```Bash
+export GOOGLE_API_KEY="your-api-key-here"
 
 ---
+## 🚀 How to Run
+Each agent can be launched via Maven. The ADK Dev UI will start a local server on port 8080.
 
-> [!NOTE]  
-> This template project is not an official Google project 
+To run a specific agent, use the following command format, replacing the mainClass with the agent you want to test (e.g., CompanyDetective, CodeRefiner, etc.):
+```Bash
+mvn compile exec:java -Dexec.mainClass=com.example.agent.CompanyDetective
+
+Once the terminal indicates the Tomcat server has started, open your browser and navigate to:
+http://localhost:8080
+
+---
+## 📸 Action Snippets
+Here are the agents running in the ADK Dev UI environment:
+
+### 1. Science Teacher (Persona Agent)
+![Science Teacher Output](Scienceteacher-agent.png)
+### 2. Stock Ticker (Custom API Tool Integration)
+![Stock Ticker Output](Stock-agent.png)
+### 3. Live Web Search (Agents as Tools)
+![Live Web Search Output](LatestNews-agent.png)
+### 4. Customer Support (Delegation Workflow)
+![Customer Support Output](Support-agent.png)
+### 5. Poet and Translator (Sequential Pipeline)
+![Poet and Translator Output](Poet-translater-agent2.png)
+### 6. Company Detective (Parallel Execution)
+![Company Detective Output](Companydetective-agent.png)
+### 7. Code Refiner (Iterative Loop)
+![Code Refiner Output](Coderefiner-agent.png)
+---
+Built with Java, Apache Maven, and the Google Agent Development Kit.
