@@ -1,14 +1,3 @@
-I can see exactly what went wrong! Looking at the text you pasted and your screenshots, the issue is **missing line breaks**.
-
-Markdown is very strict about spacing. To create a code block (the dark box with the copy button) or to make headers and bold text work, there **must be an empty line** above and below them. When you copy-pasted the text earlier, it looks like your text editor accidentally squashed all the lines together into one big paragraph.
-
-Because there were no line breaks, GitHub didn't know where the code block ended, so it just swallowed your bold text and headers inside it!
-
-Here is the fully fixed, perfectly spaced `README.md` file. I have restored all the proper spacing, added the closing backticks (```) to fix the copy-paste boxes for CMD and Bash, and fixed the spacing for your image snippets.
-
-**Delete everything in your current `README.md` file, and paste this exact block:**
-
-```markdown
 # Agentic AI Workflows in Java
 
 This repository explores modern AI agent architectures using the [Agent Development Kit (ADK)](https://google.github.io/adk-docs/) for Java. It demonstrates how to transition from basic Large Language Model (LLM) prompts to orchestrated, multi-agent systems capable of autonomous reasoning, tool usage, and complex problem-solving.
